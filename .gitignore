@@ -1,0 +1,7 @@
+.bundle
+.DS_store
+.env
+config/database.yml
+.lesson.yml
+meetups-in-space-1-migrations.md
+Gemfile.lock
