@@ -30,6 +30,8 @@ def authenticate!
 end
 
 get '/' do
+  @meetups = Meetup.all
+  @title = "Upcoming Meetups:"
   erb :index
 end
 
@@ -50,6 +52,8 @@ get '/sign_out' do
   redirect '/'
 end
 
-get '/example_protected_page' do
+get '/meetups/:id' do
   authenticate!
+  @meetup = Meetup.find(params[:id].to_i)
+  erb :show
 end
