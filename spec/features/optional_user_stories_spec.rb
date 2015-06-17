@@ -7,9 +7,9 @@ feature "user checks who has joined the meetup", %(
   So that I can see if any of my friends have joined
 
   Acceptance Criteria:
-  [ ] On the details page for a meetup, I should see a list of the members that have already joined.
-  [ ] I should see each member's avatar.
-  [ ] I should see each member's username.
+  [X] On the details page for a meetup, I should see a list of the members that have already joined.
+  [X] I should see each member's avatar.
+  [X] I should see each member's username.
   ) do
 
   pending

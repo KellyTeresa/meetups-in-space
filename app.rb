@@ -56,8 +56,18 @@ end
 get '/meetups/:id' do
   authenticate!
   @meetup = Meetup.find(params[:id].to_i)
-  @creator = Membership.where(owner: true).find_by(meetup: @meetup.id).user
+  @creator = Membership.where(owner: true).find_by(meetup: @meetup).user
+  @going = Membership.where(meetup: @meetup)
+
   erb :show
+end
+
+post '/meetups/:id' do
+  meetup = params[:id].to_i
+  Membership.create(user: current_user, meetup_id: meetup, owner: false)
+
+  flash[:notice] = "YAY, you joined. See you there!"
+  redirect "/meetups/#{meetup}"
 end
 
 get '/meetup/new' do

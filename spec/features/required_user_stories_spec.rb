@@ -55,10 +55,10 @@ feature "user joins a meetup", %(
   So that I can talk to other members of the meetup
 
   Acceptance Criteria:
-  [ ] I must be signed in.
-  [ ] From a meetups detail page, I should click a button to join the meetup.
-  [ ] I should see a message that tells let's me know when I have successfully joined a meetup.
-  [ ] Add a new record in the Memberships table listing the current user as part of the meetup (user_id, meetup_id, owner: false)
+  [X] I must be signed in.
+  [X] From a meetups detail page, I should click a button to join the meetup.
+  [X] I should see a message that tells let's me know when I have successfully joined a meetup.
+  [X] Add a new record in the Memberships table listing the current user as part of the meetup (user_id, meetup_id, owner: false)
   ) do
 
   pending

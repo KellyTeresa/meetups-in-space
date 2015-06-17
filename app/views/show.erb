@@ -4,5 +4,17 @@
 <h3>Location: </h3>
 <p><%= @meetup[:location] %></p>
 <h3>Created By: </h3>
+<img src="<%= @creator[:avatar_url] %>"/>
 <p><%= @creator[:username] %></p>
+<h3>Join?</h3>
+<form action="/meetups/<%= @meetup[:id] %>" method="post">
+  <input type="submit" value="Join!">
+</form>
+
+<h3>Members Going:</h3>
+<% @going.each do |person| %>
+  <img src="<%= person.user[:avatar_url] %>"/>
+  <p><%= person.user[:username] %></p>
+<% end %>
+
 <h2><a href="/">Back to Meetups</a></h2>
