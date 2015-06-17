@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'omniauth-github'
+require 'pry'
 
 require_relative 'config/application'
 
@@ -30,7 +31,7 @@ def authenticate!
 end
 
 get '/' do
-  @meetups = Meetup.all
+  @meetups = Meetup.all.order(:name)
   @title = "Upcoming Meetups:"
   erb :index
 end
@@ -55,5 +56,24 @@ end
 get '/meetups/:id' do
   authenticate!
   @meetup = Meetup.find(params[:id].to_i)
+  @creator = Membership.where(owner: true).find_by(meetup: @meetup.id).user
   erb :show
+end
+
+get '/meetup/new' do
+  authenticate!
+  erb :create
+end
+
+post '/meetup/new' do
+  name = params[:name]
+  description = params[:description]
+  location = params[:location]
+
+  new_meetup = Meetup.create(name: name, description: description, location: location)
+
+  Membership.create(user: current_user, meetup: new_meetup, owner: true)
+
+  flash[:notice] = "Success!"
+  redirect "/meetups/#{new_meetup.id}"
 end
