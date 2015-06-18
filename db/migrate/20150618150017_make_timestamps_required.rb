@@ -14,5 +14,4 @@ class MakeTimestampsRequired < ActiveRecord::Migration
       change_column table, :updated_at, :datetime
     end
   end
-
 end
