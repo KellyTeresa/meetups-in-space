@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618145053) do
+ActiveRecord::Schema.define(version: 20150618150017) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,16 +20,16 @@ ActiveRecord::Schema.define(version: 20150618145053) do
     t.string   "name",        limit: 255, null: false
     t.string   "description", limit: 255, null: false
     t.string   "location",    limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
   create_table "memberships", force: :cascade do |t|
     t.integer  "user_id",                    null: false
     t.integer  "meetup_id",                  null: false
     t.boolean  "owner",      default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,8 +38,8 @@ ActiveRecord::Schema.define(version: 20150618145053) do
     t.string   "username",   limit: 255, null: false
     t.string   "email",      limit: 255, null: false
     t.string   "avatar_url", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
