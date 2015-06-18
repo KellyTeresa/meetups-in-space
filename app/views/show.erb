@@ -6,10 +6,21 @@
 <h3>Created By: </h3>
 <img src="<%= @creator[:avatar_url] %>"/>
 <p><%= @creator[:username] %></p>
-<h3>Join?</h3>
-<form action="/meetups/<%= @meetup[:id] %>" method="post">
-  <input type="submit" value="Join!">
-</form>
+
+<% if current_member?(@meetup[:id]) %>
+  <h3>You are going!</h3>
+  <h3>Leave?</h3>
+  <form action="/meetups/<%= @meetup[:id] %>/leave" method="post">
+    <input type="submit" value="Leave Meetup">
+  </form>
+<% else %>
+  <h3>You're not going to this meetup...</h3>
+  <h3>Join?</h3>
+  <form action="/meetups/<%= @meetup[:id] %>/join" method="post">
+    <input type="submit" value="Join Meetup!">
+  </form>
+<% end %>
+
 
 <h3>Members Going:</h3>
 <% @going.each do |person| %>

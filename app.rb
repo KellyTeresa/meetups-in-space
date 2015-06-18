@@ -30,6 +30,11 @@ def authenticate!
   end
 end
 
+def current_member?(meetup_id)
+  member = Membership.where(meetup_id: meetup_id).find_by(user: current_user)
+  !member.nil?
+end
+
 get '/' do
   @meetups = Meetup.all.order(:name)
   @title = "Upcoming Meetups:"
@@ -62,12 +67,28 @@ get '/meetups/:id' do
   erb :show
 end
 
-post '/meetups/:id' do
+post '/meetups/:id/join' do
   authenticate!
   meetup = params[:id].to_i
-  Membership.create(user: current_user, meetup_id: meetup, owner: false)
+  if current_member?(meetup)
+    flash[:notice] = "You already joined this meetup!"
+  else
+    Membership.create(user: current_user, meetup_id: meetup, owner: false)
+    flash[:notice] = "YAY, you joined. See you there!"
+  end
+  redirect "/meetups/#{meetup}"
+end
 
-  flash[:notice] = "YAY, you joined. See you there!"
+post '/meetups/:id/leave' do
+  authenticate!
+  meetup = params[:id].to_i
+  if current_member?(meetup)
+    member = Membership.where(meetup_id: meetup).find_by(user: current_user)
+    Membership.delete(member.id)
+    flash[:notice] = "You're no longer a member of this meetup. :("
+  else
+    flash[:notice] = "You can't leave a meetup you haven't joined! How did you even find that button?"
+  end
   redirect "/meetups/#{meetup}"
 end
 

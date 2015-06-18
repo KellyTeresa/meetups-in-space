@@ -25,9 +25,9 @@ feature "user leaves a meetup", %(
   So that I'm no longer listed as a member of the meetup
 
   Acceptance Criteria:
-  [ ] I must be authenticated.
-  [ ] I must have already joined the meetup.
-  [ ] I see a message that lets me know I left the meetup successfully.
+  [X] I must be authenticated.
+  [X] I must have already joined the meetup.
+  [X] I see a message that lets me know I left the meetup successfully.
   ) do
 
   pending
