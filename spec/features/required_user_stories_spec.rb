@@ -1,5 +1,11 @@
 require "spec_helper"
+require "faker"
 # The application should satisfy the following user stories:
+user = User.create(provider: "github",
+  uid: "#{Faker::Number.number(7)}",
+  username: "#{Faker::Internet.user_name}",
+  email: "#{Faker::Internet.email}",
+  avatar_url: "#{Faker::Avatar.image}")
 
 feature "user looks at a meetup", %(
   As a user
@@ -12,7 +18,21 @@ feature "user looks at a meetup", %(
   [X] I should see where the meetup is located.
   ) do
 
-  pending
+  scenario "is signed in" do
+    visit '/'
+    sign_in_as(user)
+    click_link 'SpaceJam'
+
+    expect(page).to have_content "You already know."
+  end
+
+  scenario "is not signed in" do
+    visit '/'
+    click_link 'SpaceJam'
+
+    expect(page).to have_content 'You need to sign in if you want to do that!'
+  end
+
 
 end
 
