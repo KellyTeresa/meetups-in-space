@@ -4,4 +4,6 @@
 config/database.yml
 .lesson.yml
 meetups-in-space-1-migrations.md
+meetups-in-space-2-associations.md
+meetups-in-space-2-validations.md
 Gemfile.lock
