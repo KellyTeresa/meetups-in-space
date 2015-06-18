@@ -11,33 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150617143201) do
+ActiveRecord::Schema.define(version: 20150618145053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "meetups", force: true do |t|
-    t.string   "name",        null: false
-    t.string   "description", null: false
-    t.string   "location",    null: false
+  create_table "meetups", force: :cascade do |t|
+    t.string   "name",        limit: 255, null: false
+    t.string   "description", limit: 255, null: false
+    t.string   "location",    limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "memberships", force: true do |t|
-    t.integer  "user_id",    null: false
-    t.integer  "meetup_id",  null: false
-    t.boolean  "owner",      null: false
+  create_table "memberships", force: :cascade do |t|
+    t.integer  "user_id",                    null: false
+    t.integer  "meetup_id",                  null: false
+    t.boolean  "owner",      default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "provider",   null: false
-    t.string   "uid",        null: false
-    t.string   "username",   null: false
-    t.string   "email",      null: false
-    t.string   "avatar_url", null: false
+  create_table "users", force: :cascade do |t|
+    t.string   "provider",   limit: 255, null: false
+    t.string   "uid",        limit: 255, null: false
+    t.string   "username",   limit: 255, null: false
+    t.string   "email",      limit: 255, null: false
+    t.string   "avatar_url", limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

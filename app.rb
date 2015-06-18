@@ -63,6 +63,7 @@ get '/meetups/:id' do
 end
 
 post '/meetups/:id' do
+  authenticate!
   meetup = params[:id].to_i
   Membership.create(user: current_user, meetup_id: meetup, owner: false)
 
@@ -76,6 +77,7 @@ get '/meetup/new' do
 end
 
 post '/meetup/new' do
+  authenticate!
   name = params[:name]
   description = params[:description]
   location = params[:location]
