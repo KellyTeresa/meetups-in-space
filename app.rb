@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'omniauth-github'
+require 'pry'
 
 require_relative 'config/application'
 
@@ -29,8 +30,13 @@ def authenticate!
   end
 end
 
+def current_member?(meetup_id)
+  member = Membership.where(meetup_id: meetup_id).find_by(user: current_user)
+  !member.nil?
+end
+
 get '/' do
-  @meetups = Meetup.all
+  @meetups = Meetup.all.order(:name)
   @title = "Upcoming Meetups:"
   erb :index
 end
@@ -55,5 +61,52 @@ end
 get '/meetups/:id' do
   authenticate!
   @meetup = Meetup.find(params[:id].to_i)
+  @creator = Membership.where(owner: true).find_by(meetup: @meetup).user
+  @going = Membership.where(meetup: @meetup)
+
   erb :show
+end
+
+post '/meetups/:id/join' do
+  authenticate!
+  meetup = params[:id].to_i
+  if current_member?(meetup)
+    flash[:notice] = "You already joined this meetup!"
+  else
+    Membership.create(user: current_user, meetup_id: meetup, owner: false)
+    flash[:notice] = "YAY, you joined. See you there!"
+  end
+  redirect "/meetups/#{meetup}"
+end
+
+post '/meetups/:id/leave' do
+  authenticate!
+  meetup = params[:id].to_i
+  if current_member?(meetup)
+    member = Membership.where(meetup_id: meetup).find_by(user: current_user)
+    Membership.delete(member.id)
+    flash[:notice] = "You're no longer a member of this meetup. :("
+  else
+    flash[:notice] = "You can't leave a meetup you haven't joined! How did you even find that button?"
+  end
+  redirect "/meetups/#{meetup}"
+end
+
+get '/meetup/new' do
+  authenticate!
+  erb :create
+end
+
+post '/meetup/new' do
+  authenticate!
+  name = params[:name]
+  description = params[:description]
+  location = params[:location]
+
+  new_meetup = Meetup.create(name: name, description: description, location: location)
+
+  Membership.create(user: current_user, meetup: new_meetup, owner: true)
+
+  flash[:notice] = "Success!"
+  redirect "/meetups/#{new_meetup.id}"
 end

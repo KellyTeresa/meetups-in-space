@@ -3,4 +3,29 @@
 <p><%= @meetup[:description] %></p>
 <h3>Location: </h3>
 <p><%= @meetup[:location] %></p>
+<h3>Created By: </h3>
+<img src="<%= @creator[:avatar_url] %>"/>
+<p><%= @creator[:username] %></p>
+
+<% if current_member?(@meetup[:id]) %>
+  <h3>You are going!</h3>
+  <h3>Leave?</h3>
+  <form action="/meetups/<%= @meetup[:id] %>/leave" method="post">
+    <input type="submit" value="Leave Meetup">
+  </form>
+<% else %>
+  <h3>You're not going to this meetup...</h3>
+  <h3>Join?</h3>
+  <form action="/meetups/<%= @meetup[:id] %>/join" method="post">
+    <input type="submit" value="Join Meetup!">
+  </form>
+<% end %>
+
+
+<h3>Members Going:</h3>
+<% @going.each do |person| %>
+  <img src="<%= person.user[:avatar_url] %>"/>
+  <p><%= person.user[:username] %></p>
+<% end %>
+
 <h2><a href="/">Back to Meetups</a></h2>
